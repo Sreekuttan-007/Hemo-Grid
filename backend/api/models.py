@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date as date_, datetime
 
 from sqlalchemy import Column, JSON
 from sqlmodel import SQLModel, Field
@@ -20,15 +20,15 @@ class Lot(SQLModel, table=True):
     blood_group: str
     component: str
     units: int
-    collected_at: date
-    expires_at: date = Field(index=True)
+    collected_at: date_
+    expires_at: date_ = Field(index=True)
     storage_status: str          # OK | ANOMALY | UNKNOWN
 
 
 class Consumption(SQLModel, table=True):
     id: str = Field(primary_key=True)
     facility_id: str = Field(foreign_key="facility.id", index=True)
-    date: date = Field(index=True)
+    date: date_ = Field(index=True)
     blood_group: str
     component: str
     units: int

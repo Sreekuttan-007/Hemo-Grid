@@ -127,8 +127,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   const updateRecommendationStatus = useCallback(async (id: string, status: RecStatus) => {
+    const action = status === 'UNDER_REVIEW' ? 'OPENED' : status;
     try {
-      await postJSON(`/recommendations/${id}/review`, { status });
+      await postJSON(`/recommendations/${id}/review`, { actor: 'dashboard-user', action, note: null });
     } catch (e) {
       // Prototype fallback update in local state
     }
