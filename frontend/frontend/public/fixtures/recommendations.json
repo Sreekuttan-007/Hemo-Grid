@@ -1,0 +1,252 @@
+{
+  "recommendations": [
+    {
+      "id": "rec-001",
+      "status": "GENERATED",
+      "source_lot_id": "LOT-GMC-RBC-001",
+      "source_facility_id": "fac-001",
+      "source_facility_name": "Greenfield Medical Center",
+      "dest_facility_id": "fac-002",
+      "dest_facility_name": "City General Hospital",
+      "blood_group": "O_POS",
+      "component": "RBC",
+      "units": 5,
+      "rescue_score": 94,
+      "transit_hours": 2.5,
+      "factors": {
+        "er": 0.85,
+        "sr": 0.90,
+        "feas": 0.95,
+        "cov": 0.88,
+        "damp": 1.0,
+        "gate": 1.0,
+        "contrib_er": 25.5,
+        "contrib_sr": 27.0,
+        "contrib_feas": 19.0,
+        "contrib_cov": 17.6,
+        "raw": 89.1,
+        "inputs": {
+          "expiry_risk": 0.85,
+          "shortage_risk": 0.90,
+          "feasibility": 0.95,
+          "coverage": 0.88
+        }
+      },
+      "explanation": {
+        "why_source": "Greenfield has 12 O+ RBC units approaching expiry within 3 days, with 7 units flagged at rescue-window risk.",
+        "why_destination": "City General Hospital faces a projected deficit of 5 O+ RBC units over the 7-day forecast horizon with 82% shortage risk.",
+        "why_quantity": "5 units balances City General's gap while preserving Greenfield's reserve for local demand.",
+        "why_now": "Expiry window closes in 3 days. Delay risks irreversible unit wastage and City General stockout."
+      },
+      "checks": [
+        {
+          "code": "TEMP_RANGE",
+          "label": "Cold Chain Temperature",
+          "passed": true,
+          "detail": "Source lot maintained at 2-6°C throughout storage"
+        },
+        {
+          "code": "COMPATibility",
+          "label": "Blood Group Compatibility",
+          "passed": true,
+          "detail": "O+ RBC compatible with City General patient population"
+        },
+        {
+          "code": "EXPIRY_BUFFER",
+          "label": "Expiry Buffer Check",
+          "passed": true,
+          "detail": "Transit + receiving buffer within 72h expiry window"
+        },
+        {
+          "code": "STORAGE_CAP",
+          "label": "Destination Storage Capacity",
+          "passed": true,
+          "detail": "City General has available cold storage slots"
+        }
+      ],
+      "created_at": "2026-09-15T10:30:00Z"
+    },
+    {
+      "id": "rec-002",
+      "status": "GENERATED",
+      "source_lot_id": "LOT-CTC-RBC-001",
+      "source_facility_id": "fac-003",
+      "source_facility_name": "Central Trauma Centre",
+      "dest_facility_id": "fac-005",
+      "dest_facility_name": "St. Raphael's Hospital",
+      "blood_group": "O_POS",
+      "component": "RBC",
+      "units": 3,
+      "rescue_score": 81,
+      "transit_hours": 3.0,
+      "factors": {
+        "er": 0.70,
+        "sr": 0.75,
+        "feas": 0.88,
+        "cov": 0.80,
+        "damp": 1.0,
+        "gate": 1.0,
+        "contrib_er": 21.0,
+        "contrib_sr": 22.5,
+        "contrib_feas": 17.6,
+        "contrib_cov": 16.0,
+        "raw": 77.1,
+        "inputs": {
+          "expiry_risk": 0.70,
+          "shortage_risk": 0.75,
+          "feasibility": 0.88,
+          "coverage": 0.80
+        }
+      },
+      "explanation": {
+        "why_source": "Central Trauma Centre has 10 O+ RBC units, 4 at risk with 6-day expiry window.",
+        "why_destination": "St. Raphael's faces a 3-unit O+ RBC deficit with HIGH shortage risk.",
+        "why_quantity": "3 units addresses St. Raphael's gap without depleting Central Trauma's reserves.",
+        "why_now": "St. Raphael's shortage risk escalates to CRITICAL within 48 hours."
+      },
+      "checks": [
+        {
+          "code": "TEMP_RANGE",
+          "label": "Cold Chain Temperature",
+          "passed": false,
+          "detail": "Storage anomaly flagged at Central Trauma Centre — 6.8°C recorded"
+        },
+        {
+          "code": "COMPATibility",
+          "label": "Blood Group Compatibility",
+          "passed": true,
+          "detail": "O+ RBC compatible with St. Raphael's patient population"
+        },
+        {
+          "code": "EXPIRY_BUFFER",
+          "label": "Expiry Buffer Check",
+          "passed": true,
+          "detail": "Transit + receiving buffer within acceptable range"
+        },
+        {
+          "code": "STORAGE_CAP",
+          "label": "Destination Storage Capacity",
+          "passed": true,
+          "detail": "St. Raphael's has available cold storage slots"
+        }
+      ],
+      "created_at": "2026-09-15T10:30:00Z"
+    },
+    {
+      "id": "rec-003",
+      "status": "GENERATED",
+      "source_lot_id": "LOT-WGH-PLT-001",
+      "source_facility_id": "fac-007",
+      "source_facility_name": "Westgate General Hospital",
+      "dest_facility_id": "fac-005",
+      "dest_facility_name": "St. Raphael's Hospital",
+      "blood_group": "B_POS",
+      "component": "PLATELETS",
+      "units": 2,
+      "rescue_score": 72,
+      "transit_hours": 4.0,
+      "factors": {
+        "er": 0.65,
+        "sr": 0.60,
+        "feas": 0.80,
+        "cov": 0.75,
+        "damp": 1.0,
+        "gate": 1.0,
+        "contrib_er": 19.5,
+        "contrib_sr": 18.0,
+        "contrib_feas": 16.0,
+        "contrib_cov": 15.0,
+        "raw": 68.5,
+        "inputs": {
+          "expiry_risk": 0.65,
+          "shortage_risk": 0.60,
+          "feasibility": 0.80,
+          "coverage": 0.75
+        }
+      },
+      "explanation": {
+        "why_source": "Westgate has 4 B+ platelet units with 3-day expiry, 3 at rescue-window risk.",
+        "why_destination": "St. Raphael's has a 2-unit B+ platelet deficit with WATCH-level shortage.",
+        "why_quantity": "2 units covers the immediate deficit while Westgate retains buffer stock.",
+        "why_now": "Platelet shelf life is 5 days — delay significantly increases wastage probability."
+      },
+      "checks": [
+        {
+          "code": "TEMP_RANGE",
+          "label": "Cold Chain Temperature",
+          "passed": true,
+          "detail": "Source lot maintained at 20-24°C for platelet storage"
+        },
+        {
+          "code": "COMPATibility",
+          "label": "Blood Group Compatibility",
+          "passed": true,
+          "detail": "B+ Platelets compatible with St. Raphael's demand profile"
+        },
+        {
+          "code": "EXPIRY_BUFFER",
+          "label": "Expiry Buffer Check",
+          "passed": true,
+          "detail": "Transit time within platelet viability window"
+        },
+        {
+          "code": "STORAGE_CAP",
+          "label": "Destination Storage Capacity",
+          "passed": true,
+          "detail": "St. Raphael's has platelet incubator capacity"
+        }
+      ],
+      "created_at": "2026-09-15T10:30:00Z"
+    }
+  ],
+  "exclusions": [
+    {
+      "source_lot_id": "LOT-CTC-PLT-001",
+      "source_facility_id": "fac-003",
+      "source_facility_name": "Central Trauma Centre",
+      "dest_facility_id": "fac-002",
+      "dest_facility_name": "City General Hospital",
+      "blood_group": "A_POS",
+      "component": "PLATELETS",
+      "failed_codes": ["TEMP_RANGE", "EXPIRY_BUFFER"],
+      "checks": [
+        {
+          "code": "TEMP_RANGE",
+          "label": "Cold Chain Temperature",
+          "passed": false,
+          "detail": "Storage anomaly detected — 6.8°C exceeds 2-6°C range"
+        },
+        {
+          "code": "EXPIRY_BUFFER",
+          "label": "Expiry Buffer Check",
+          "passed": false,
+          "detail": "2-day expiry insufficient for transit + processing window"
+        }
+      ]
+    },
+    {
+      "source_lot_id": "LOT-SRH-PLT-001",
+      "source_facility_id": "fac-005",
+      "source_facility_name": "St. Raphael's Hospital",
+      "dest_facility_id": "fac-007",
+      "dest_facility_name": "Westgate General Hospital",
+      "blood_group": "B_POS",
+      "component": "PLATELETS",
+      "failed_codes": ["STORAGE_CAP"],
+      "checks": [
+        {
+          "code": "TEMP_RANGE",
+          "label": "Cold Chain Temperature",
+          "passed": false,
+          "detail": "Storage status UNKNOWN — telemetry data missing"
+        },
+        {
+          "code": "STORAGE_CAP",
+          "label": "Destination Storage Capacity",
+          "passed": false,
+          "detail": "Westgate platelet incubator at full capacity"
+        }
+      ]
+    }
+  ]
+}
