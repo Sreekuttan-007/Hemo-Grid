@@ -7,8 +7,8 @@ services:
     buildCommand: >-
       pip install -e ../model &&
       pip install -r requirements.txt &&
-      cd ../web && npm ci && npm run build && cd ../backend &&
-      cp -r ../web/dist ./dist
+      cd ../frontend && npm ci && npm run build && cd ../backend &&
+      cp -r ../frontend/dist ./dist
     startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
@@ -17,3 +17,5 @@ services:
         value: greedy
       - key: FORECASTER
         value: ewma
+      - key: VITE_USE_FIXTURES
+        value: "false"
