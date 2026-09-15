@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: hemogrid-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: >-
+      pip install -e ../model &&
+      pip install -r requirements.txt &&
+      cd ../web && npm ci && npm run build && cd ../backend &&
+      cp -r ../web/dist ./dist
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: MATCHER
+        value: greedy
+      - key: FORECASTER
+        value: ewma
