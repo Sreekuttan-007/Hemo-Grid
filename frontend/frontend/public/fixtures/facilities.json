@@ -1,0 +1,124 @@
+{
+  "facilities": [
+    {
+      "facility_id": "fac-001",
+      "code": "GMC",
+      "name": "Greenfield Medical Center",
+      "tier": "REGIONAL_CENTRE",
+      "lat": 0.35,
+      "lng": 0.25,
+      "total_units": 42,
+      "at_risk_units": 12,
+      "gap_units": 0,
+      "worst_tier": "WATCH"
+    },
+    {
+      "facility_id": "fac-002",
+      "code": "CGH",
+      "name": "City General Hospital",
+      "tier": "HOSPITAL",
+      "lat": 0.62,
+      "lng": 0.55,
+      "total_units": 18,
+      "at_risk_units": 3,
+      "gap_units": 5,
+      "worst_tier": "CRITICAL"
+    },
+    {
+      "facility_id": "fac-003",
+      "code": "CTC",
+      "name": "Central Trauma Centre",
+      "tier": "HOSPITAL",
+      "lat": 0.48,
+      "lng": 0.70,
+      "total_units": 27,
+      "at_risk_units": 6,
+      "gap_units": 0,
+      "worst_tier": "HIGH"
+    },
+    {
+      "facility_id": "fac-004",
+      "code": "MCH",
+      "name": "Metro Children's Hospital",
+      "tier": "HOSPITAL",
+      "lat": 0.20,
+      "lng": 0.80,
+      "total_units": 15,
+      "at_risk_units": 2,
+      "gap_units": 0,
+      "worst_tier": "STABLE"
+    },
+    {
+      "facility_id": "fac-005",
+      "code": "SRH",
+      "name": "St. Raphael's Hospital",
+      "tier": "DISTRICT",
+      "lat": 0.75,
+      "lng": 0.30,
+      "total_units": 20,
+      "at_risk_units": 8,
+      "gap_units": 3,
+      "worst_tier": "HIGH"
+    },
+    {
+      "facility_id": "fac-006",
+      "code": "NMC",
+      "name": "Northside Medical Clinic",
+      "tier": "DISTRICT",
+      "lat": 0.10,
+      "lng": 0.50,
+      "total_units": 10,
+      "at_risk_units": 1,
+      "gap_units": 0,
+      "worst_tier": "STABLE"
+    },
+    {
+      "facility_id": "fac-007",
+      "code": "WGH",
+      "name": "Westgate General Hospital",
+      "tier": "HOSPITAL",
+      "lat": 0.55,
+      "lng": 0.10,
+      "total_units": 33,
+      "at_risk_units": 5,
+      "gap_units": 2,
+      "worst_tier": "WATCH"
+    },
+    {
+      "facility_id": "fac-008",
+      "code": "EMC",
+      "name": "Eastview Medical Complex",
+      "tier": "REGIONAL_CENTRE",
+      "lat": 0.85,
+      "lng": 0.65,
+      "total_units": 38,
+      "at_risk_units": 4,
+      "gap_units": 0,
+      "worst_tier": "STABLE"
+    },
+    {
+      "facility_id": "fac-009",
+      "code": "SPH",
+      "name": "Sunrise Provincial Hospital",
+      "tier": "DISTRICT",
+      "lat": 0.40,
+      "lng": 0.90,
+      "total_units": 12,
+      "at_risk_units": 3,
+      "gap_units": 1,
+      "worst_tier": "WATCH"
+    },
+    {
+      "facility_id": "fac-010",
+      "code": "LRC",
+      "name": "Lakeside Recovery Centre",
+      "tier": "DISTRICT",
+      "lat": 0.90,
+      "lng": 0.40,
+      "total_units": 8,
+      "at_risk_units": 0,
+      "gap_units": 0,
+      "worst_tier": "STABLE"
+    }
+  ]
+}

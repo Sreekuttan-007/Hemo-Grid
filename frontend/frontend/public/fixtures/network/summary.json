@@ -1,0 +1,27 @@
+{
+  "as_of": "2026-09-15T12:00:00Z",
+  "total_units": 223,
+  "total_lots": 34,
+  "at_risk_units": 44,
+  "rescuable_units": 18,
+  "facilities_with_gap": 3,
+  "total_gap_units": 11,
+  "recommendation_count": 3,
+  "exclusion_count": 2,
+  "addressable_units": 18,
+  "by_component": [
+    { "component": "RBC", "units": 120, "at_risk_units": 28 },
+    { "component": "PLATELETS", "units": 55, "at_risk_units": 10 },
+    { "component": "PLASMA", "units": 48, "at_risk_units": 6 }
+  ],
+  "by_group": [
+    { "blood_group": "O_POS", "units": 65, "at_risk_units": 18 },
+    { "blood_group": "O_NEG", "units": 22, "at_risk_units": 4 },
+    { "blood_group": "A_POS", "units": 40, "at_risk_units": 8 },
+    { "blood_group": "A_NEG", "units": 15, "at_risk_units": 3 },
+    { "blood_group": "B_POS", "units": 30, "at_risk_units": 5 },
+    { "blood_group": "B_NEG", "units": 12, "at_risk_units": 2 },
+    { "blood_group": "AB_POS", "units": 25, "at_risk_units": 3 },
+    { "blood_group": "AB_NEG", "units": 14, "at_risk_units": 1 }
+  ]
+}
