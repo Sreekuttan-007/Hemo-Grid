@@ -45,6 +45,52 @@ def test_facility_detail_404():
     assert resp.status_code == 404
 
 
+def test_create_lot():
+    resp = client.post(
+        "/api/facilities/FAC02/lots",
+        json={
+            "blood_group": "O_POS",
+            "component": "RBC",
+            "units": 4,
+            "collected_at": "2026-02-01",
+            "expires_at": "2026-04-01",
+            "storage_status": "OK",
+        },
+    )
+    assert resp.status_code == 201
+    body = resp.json()
+    assert body["lot_id"].startswith("LOT-")
+    assert body["trace_id"] == f"TRC-FAC02-{body['lot_id'].removeprefix('LOT-')}"
+    assert body["facility_name"] == "Pune City Hospital"
+    assert body["blood_group"] == "O_POS"
+    assert body["days_to_expiry"] == 31
+
+    listed = client.get("/api/risk/expiry").json()["lots"]
+    assert any(lot["lot_id"] == body["lot_id"] for lot in listed)
+
+
+def test_create_lot_unknown_facility_404():
+    resp = client.post(
+        "/api/facilities/NOPE/lots",
+        json={
+            "blood_group": "O_POS", "component": "RBC", "units": 1,
+            "collected_at": "2026-02-01", "expires_at": "2026-04-01",
+        },
+    )
+    assert resp.status_code == 404
+
+
+def test_create_lot_bad_date_order_400():
+    resp = client.post(
+        "/api/facilities/FAC02/lots",
+        json={
+            "blood_group": "O_POS", "component": "RBC", "units": 1,
+            "collected_at": "2026-04-01", "expires_at": "2026-02-01",
+        },
+    )
+    assert resp.status_code == 400
+
+
 def test_risk_expiry_by_state_has_all_four():
     resp = client.get("/api/risk/expiry")
     assert resp.status_code == 200

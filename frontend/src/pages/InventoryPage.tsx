@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { Search, QrCode, RotateCcw, Package } from 'lucide-react';
+import { Search, QrCode, RotateCcw, Package, PackagePlus } from 'lucide-react';
 import { DisclaimerFooter } from '../components/common/DisclaimerFooter';
+import { AddLotModal } from '../components/common/AddLotModal';
 import {
   formatBloodGroup,
   formatComponent,
@@ -25,6 +26,7 @@ export const InventoryPage: React.FC = () => {
   const [selectedComponent, setSelectedComponent] = useState('ALL');
   const [selectedWindowState, setSelectedWindowState] = useState('ALL');
   const [selectedStorage, setSelectedStorage] = useState('ALL');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const filteredLots = useMemo(() => {
     return expiryLots.filter((item) => {
@@ -52,11 +54,20 @@ export const InventoryPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight">Blood Inventory</h1>
-        <p className="text-xs font-medium text-slate-500 mt-1">
-          Track component-level inventory across the HemoGrid network.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Blood Inventory</h1>
+          <p className="text-xs font-medium text-slate-500 mt-1">
+            Track component-level inventory across the HemoGrid network.
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-emerald-900 hover:bg-emerald-800 text-white text-xs font-bold rounded-full transition-colors"
+        >
+          <PackagePlus className="w-4 h-4" />
+          Add Inventory
+        </button>
       </div>
 
       {/* FILTER BAR */}
@@ -227,6 +238,8 @@ export const InventoryPage: React.FC = () => {
       </div>
 
       <DisclaimerFooter />
+
+      <AddLotModal open={showAddModal} onClose={() => setShowAddModal(false)} />
     </div>
   );
 };

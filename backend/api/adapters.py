@@ -3,7 +3,8 @@
 The only place a blood-group format conversion happens: rows store the
 "O+"-style values seed.py writes; hemogrid_model (enums.py) uses "O_POS"-style
 values. Model output is already in "O_POS"-style, which the frontend's own
-types also expect, so no reverse mapping is needed on the way out.
+types also expect, so no reverse mapping is needed on pipeline output —
+MODEL_TO_DB_GROUP exists only for writing a new Lot row from a request body.
 """
 
 from datetime import date
@@ -19,6 +20,10 @@ _DB_TO_MODEL_GROUP = {
     "B+": "B_POS", "B-": "B_NEG",
     "AB+": "AB_POS", "AB-": "AB_NEG",
 }
+
+# Reverse of the above, used only when writing a new Lot from a request body
+# that (like the rest of the API surface) speaks the model's "O_POS" style.
+MODEL_TO_DB_GROUP = {v: k for k, v in _DB_TO_MODEL_GROUP.items()}
 
 
 def _facility_to_in(row: Facility) -> FacilityIn:

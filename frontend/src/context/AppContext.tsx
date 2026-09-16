@@ -8,7 +8,8 @@ import type {
   NetworkSummary,
   AlertItem,
   PrototypeSettings,
-  RecStatus
+  RecStatus,
+  AddLotPayload
 } from '../types';
 import { useApi, postJSON } from '../api';
 import {
@@ -59,6 +60,7 @@ interface AppContextType {
   setDemandIncreasePercent: (val: number) => void;
 
   updateRecommendationStatus: (id: string, status: RecStatus) => Promise<void>;
+  addLot: (facilityId: string, payload: AddLotPayload) => Promise<void>;
   refreshData: () => void;
   markAlertRead: (id: string) => void;
   resetDemoData: () => void;
@@ -94,14 +96,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     return '/landing';
   });
-  const [recRefreshKey, setRecRefreshKey] = useState(0);
-  const [summaryRefreshKey, setSummaryRefreshKey] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const facilitiesRes = useApi<{ facilities: Facility[] }>('/facilities');
-  const recommendationsRes = useApi<{ recommendations: RecommendationItem[]; exclusions: ExclusionItem[] }>(`/recommendations?_=${recRefreshKey}`);
-  const summaryRes = useApi<NetworkSummary>(`/network/summary?_=${summaryRefreshKey}`);
-  const shortagesRes = useApi<{ shortages: ShortageItem[] }>('/risk/shortage');
-  const expiryRes = useApi<{ lots: LotRiskItem[]; by_state: Record<string, number> }>('/risk/expiry');
+  const facilitiesRes = useApi<{ facilities: Facility[] }>(`/facilities?_=${refreshKey}`);
+  const recommendationsRes = useApi<{ recommendations: RecommendationItem[]; exclusions: ExclusionItem[] }>(`/recommendations?_=${refreshKey}`);
+  const summaryRes = useApi<NetworkSummary>(`/network/summary?_=${refreshKey}`);
+  const shortagesRes = useApi<{ shortages: ShortageItem[] }>(`/risk/shortage?_=${refreshKey}`);
+  const expiryRes = useApi<{ lots: LotRiskItem[]; by_state: Record<string, number> }>(`/risk/expiry?_=${refreshKey}`);
 
   const facilities = (facilitiesRes.data?.facilities && facilitiesRes.data.facilities.length > 0) ? facilitiesRes.data.facilities : STATIC_FACILITIES;
   const recommendations = (recommendationsRes.data?.recommendations && recommendationsRes.data.recommendations.length > 0) ? recommendationsRes.data.recommendations : STATIC_RECOMMENDATIONS;
@@ -133,12 +134,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {
       // Prototype fallback update in local state
     }
-    setRecRefreshKey((k) => k + 1);
+    setRefreshKey((k) => k + 1);
   }, []);
 
   const refreshData = useCallback(() => {
-    setRecRefreshKey((k) => k + 1);
-    setSummaryRefreshKey((k) => k + 1);
+    setRefreshKey((k) => k + 1);
+  }, []);
+
+  const addLot = useCallback(async (facilityId: string, payload: AddLotPayload) => {
+    await postJSON(`/facilities/${facilityId}/lots`, payload);
+    setRefreshKey((k) => k + 1);
   }, []);
 
   const markAlertRead = useCallback((id: string) => {
@@ -244,6 +249,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         demandIncreasePercent,
         setDemandIncreasePercent,
         updateRecommendationStatus,
+        addLot,
         refreshData,
         markAlertRead,
         resetDemoData,

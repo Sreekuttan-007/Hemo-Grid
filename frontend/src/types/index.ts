@@ -4,6 +4,15 @@ export type ShortageTier = "STABLE" | "WATCH" | "HIGH" | "CRITICAL";
 export type WindowState = "NORMAL" | "WATCH" | "RESCUE_WINDOW" | "UNRESCUABLE";
 export type RecStatus = "GENERATED" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CLOSED";
 
+export interface AddLotPayload {
+  blood_group: BloodGroup;
+  component: Component;
+  units: number;
+  collected_at: string;
+  expires_at: string;
+  storage_status: "OK" | "ANOMALY" | "UNKNOWN";
+}
+
 export interface Facility {
   facility_id: string;
   code: string;

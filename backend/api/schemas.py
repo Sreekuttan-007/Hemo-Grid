@@ -5,9 +5,10 @@ may only be added, removed, or renamed by explicit agreement with the
 frontend team.
 """
 
-from typing import Any
+from datetime import date
+from typing import Any, Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 # ---------------------------------------------------------------------------
@@ -191,6 +192,8 @@ class ExpiryLot(BaseModel):
     at_risk_units: int
     days_to_expiry: int
     window_state: str
+    storage_status: str
+    trace_id: str
 
 
 class ExpiryByState(BaseModel):
@@ -203,6 +206,40 @@ class ExpiryByState(BaseModel):
 class RiskExpiryResponse(BaseModel):
     lots: list[ExpiryLot]
     by_state: ExpiryByState
+
+
+# ---------------------------------------------------------------------------
+# POST /api/facilities/{facility_id}/lots
+# ---------------------------------------------------------------------------
+
+BloodGroupLiteral = Literal[
+    "O_POS", "O_NEG", "A_POS", "A_NEG", "B_POS", "B_NEG", "AB_POS", "AB_NEG",
+]
+ComponentLiteral = Literal["RBC", "PLATELETS", "PLASMA"]
+StorageStatusLiteral = Literal["OK", "ANOMALY", "UNKNOWN"]
+
+
+class LotCreateRequest(BaseModel):
+    blood_group: BloodGroupLiteral
+    component: ComponentLiteral
+    units: int = Field(gt=0)
+    collected_at: date
+    expires_at: date
+    storage_status: StorageStatusLiteral = "OK"
+
+
+class LotCreateResponse(BaseModel):
+    lot_id: str
+    trace_id: str
+    facility_id: str
+    facility_name: str
+    blood_group: str
+    component: str
+    units: int
+    collected_at: str
+    expires_at: str
+    storage_status: str
+    days_to_expiry: int
 
 
 # ---------------------------------------------------------------------------

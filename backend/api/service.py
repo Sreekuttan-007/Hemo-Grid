@@ -8,9 +8,10 @@ Caching is a plain dict keyed by an integer version bumped by invalidate().
 import os
 import uuid
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from dotenv import load_dotenv
+from sqlalchemy import func
 from sqlmodel import Session, select
 
 from api import adapters
@@ -229,7 +230,8 @@ def shortages(session: Session, result: PipelineResult) -> list[dict]:
     return [_shortage_item(s, names, forecasts_by_line) for s in result.shortages]
 
 
-def _expiry_lot_item(lot_risk, names: dict[str, str]) -> dict:
+def _expiry_lot_item(lot_risk, names: dict[str, str], lot_rows: dict[str, Lot]) -> dict:
+    lot_row = lot_rows[lot_risk.lot_id]
     return {
         "lot_id": lot_risk.lot_id,
         "facility_id": lot_risk.facility_id,
@@ -240,12 +242,15 @@ def _expiry_lot_item(lot_risk, names: dict[str, str]) -> dict:
         "at_risk_units": lot_risk.at_risk_units,
         "days_to_expiry": lot_risk.days_to_expiry,
         "window_state": lot_risk.window_state,
+        "storage_status": lot_row.storage_status,
+        "trace_id": lot_row.trace_id,
     }
 
 
 def expiry(session: Session, result: PipelineResult) -> tuple[list[dict], dict[str, int]]:
     names = facility_names(session)
-    lots = [_expiry_lot_item(lr, names) for lr in result.lot_risks]
+    lot_rows = {row.id: row for row in session.exec(select(Lot)).all()}
+    lots = [_expiry_lot_item(lr, names, lot_rows) for lr in result.lot_risks]
     by_state = {state: 0 for state in _WINDOW_STATES}
     for lr in result.lot_risks:
         by_state[lr.window_state] += 1
@@ -347,3 +352,57 @@ def facility_detail(session: Session, result: PipelineResult, facility_id: str) 
     ]
 
     return {"facility": summary, "lots": lots, "shortages": facility_shortages}
+
+
+def create_lot(
+    session: Session,
+    facility_id: str,
+    blood_group: str,
+    component: str,
+    units: int,
+    collected_at: date,
+    expires_at: date,
+    storage_status: str,
+) -> dict | None:
+    """Inserts a new Lot row and bumps the pipeline cache version so the next
+    read picks it up. Returns None if facility_id doesn't exist (404 in the
+    route); raises ValueError on a bad date order (400 in the route)."""
+    facility = session.get(Facility, facility_id)
+    if facility is None:
+        return None
+
+    if expires_at <= collected_at:
+        raise ValueError("expires_at must be after collected_at")
+
+    next_seq = session.exec(select(func.count()).select_from(Lot)).one() + 1
+    lot_id = f"LOT-{next_seq:05d}"
+    trace_id = f"TRC-{facility_id}-{next_seq:05d}"
+
+    row = Lot(
+        id=lot_id,
+        trace_id=trace_id,
+        facility_id=facility_id,
+        blood_group=adapters.MODEL_TO_DB_GROUP[blood_group],
+        component=component,
+        units=units,
+        collected_at=collected_at,
+        expires_at=expires_at,
+        storage_status=storage_status,
+    )
+    session.add(row)
+    session.commit()
+    invalidate()
+
+    return {
+        "lot_id": lot_id,
+        "trace_id": trace_id,
+        "facility_id": facility_id,
+        "facility_name": facility.name,
+        "blood_group": blood_group,
+        "component": component,
+        "units": units,
+        "collected_at": collected_at.isoformat(),
+        "expires_at": expires_at.isoformat(),
+        "storage_status": storage_status,
+        "days_to_expiry": (expires_at - AS_OF).days,
+    }
